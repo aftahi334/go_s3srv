@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	"githubgo .com/gorilla/mux"
+	"github.com/gorilla/mux"
 )
 
 func sendFile(w http.ResponseWriter, r *http.Request) {
