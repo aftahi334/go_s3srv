@@ -87,7 +87,6 @@ func deleteFile(writer http.ResponseWriter, request *http.Request) {
 	writer.WriteHeader(http.StatusNoContent)
 }
 
-// curl command: curl -X GET http://127.0.0.1:3333/
 func getList(writer http.ResponseWriter, request *http.Request) {
 	// Get the list of files in the current directory
 	files, err := os.ReadDir(".")
