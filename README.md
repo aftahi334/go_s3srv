@@ -38,6 +38,7 @@ Configuration is done through environment variables:
 - `S3_SECRET_KEY`: Secret key for authentication.
 
 Example:
+	
 	export S3_SERVER_PORT=8080
 
 	export S3_DATA_DIR=/path/to/data
@@ -45,7 +46,7 @@ Example:
 	export S3_ACCESS_KEY=your_access_key
 
 	export S3_SECRET_KEY=your_secret_key
-	
+
 	./gos3server
 
 ## Usage
