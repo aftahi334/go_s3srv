@@ -11,13 +11,6 @@ import (
 
 func main() {
 
-	pwd, err := os.Getwd()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-	fmt.Println(pwd)
-
 	r := mux.NewRouter()
 
 	r.HandleFunc("/{filename}", getFile).Methods(http.MethodGet)
@@ -89,7 +82,12 @@ func deleteFile(writer http.ResponseWriter, request *http.Request) {
 
 func getList(writer http.ResponseWriter, request *http.Request) {
 	// Get the list of files in the current directory
-	files, err := os.ReadDir(".")
+	pwd, err := os.Getwd()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	files, err := os.ReadDir(pwd)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusInternalServerError)
 		return
@@ -105,4 +103,11 @@ func getList(writer http.ResponseWriter, request *http.Request) {
 	}
 
 	writer.WriteHeader(http.StatusOK)
+}
+
+func getEnv(key, defaultVal string) string {
+	if value, ok := os.LookupEnv(key); ok {
+		return value
+	}
+	return defaultVal
 }
