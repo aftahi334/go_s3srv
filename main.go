@@ -18,8 +18,11 @@ func main() {
 	r.HandleFunc("/{filename}", deleteFile).Methods(http.MethodDelete)
 	r.HandleFunc("/", getList).Methods(http.MethodGet)
 
-	fmt.Println("Starting server at port 3333")
-	http.ListenAndServe("127.0.0.1:3333", r)
+	S3_SERVER_PORT := getEnv("S3_SERVER_PORT", "8080")
+
+	fmt.Printf("Starting server at port %s\n", S3_SERVER_PORT)
+	addrr := "127.0.0.1:" + S3_SERVER_PORT
+	http.ListenAndServe(addrr, r)
 }
 
 func getFile(writer http.ResponseWriter, request *http.Request) {
@@ -81,13 +84,15 @@ func deleteFile(writer http.ResponseWriter, request *http.Request) {
 }
 
 func getList(writer http.ResponseWriter, request *http.Request) {
+
 	// Get the list of files in the current directory
 	pwd, err := os.Getwd()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	files, err := os.ReadDir(pwd)
+	S3_DATA_DIR := getEnv("S3_DATA_DIR", pwd)
+	files, err := os.ReadDir(S3_DATA_DIR)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusInternalServerError)
 		return
